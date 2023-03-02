@@ -15,6 +15,10 @@ import hashlib
 
 url = "https://simsvendapi-production.up.railway.app/"
 
+class EditForm(forms.Form):    
+    id = forms.CharField(label = "id", required=True)
+    elo = forms.CharField(label = "Elo",required=False)
+    points = forms.CharField(label = "Points",required=False)
 
 def index(request):
     
@@ -36,7 +40,11 @@ def users(request):
 
     if request.session.get('role') == 2:     
 
-        return render(request, "web_admin/users.html")
+        return render(request, "web_admin/users.html",{
+
+            "form" : EditForm
+
+        })
     else:
   
         return HttpResponseRedirect(reverse("login")) 

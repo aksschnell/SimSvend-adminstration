@@ -2,4 +2,15 @@
 
 <h1>Brugere</h1>
 
+<h3 style="color: red">{{message}}</h3>
+<form action="" method="POST">
+  {% csrf_token %}
+  <p>{{form.id.label}} {{form.id}}</p>
+  <p>{{form.elo.label}} {{form.elo}}</p>
+  <p>{{form.points.label}} {{form.points}}</p>
+
+  <br /><br />
+  <input type="submit" value="Save" />
+</form>
+
 {% endblock %}
