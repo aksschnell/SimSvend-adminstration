@@ -28,9 +28,6 @@ class TourForm(forms.Form):
     PricePool = forms.IntegerField(label = "PricePool",required=True)
     Dec = forms.CharField(label="Description", required=True)
     
-
-
-    
    
 
 
@@ -44,7 +41,7 @@ def index(request):
     if request.session.get('role') == 2:      
 
  
-        return render(request, "web_admin/index.html",{          
+        return render(request, "index.html",{          
         
     })
     
@@ -58,7 +55,7 @@ def users(request):
 
     if request.session.get('role') == 2:     
 
-        return render(request, "web_admin/users.html",{
+        return render(request, "users.html",{
 
             "form" : EditForm
 
@@ -72,7 +69,7 @@ def matches(request):
 
     if request.session.get('role') == 2:     
 
-        return render(request, "web_admin/matches.html")
+        return render(request, "matches.html")
 
 
     else:
@@ -84,15 +81,59 @@ def matches(request):
 
 def tournements(request):
 
-    if request.session.get('role') == 2:     
+    if request.session.get('role') == 2:    
+        
+        if request.method == "POST":
 
-        return render(request, "web_admin/tournements.html", {
+
+            tour_url = "https://simsvendapi-production.up.railway.app/tour/"
+
+            
+            form = TourForm(request.POST)
+            
+            if form.is_valid():
+                
+                name = form.cleaned_data["name"]
+                how_many = form.cleaned_data["how_many"]
+                place_id = form.cleaned_data["place_id"]
+                gender = form.cleaned_data["gender"]
+                PricePool = form.cleaned_data["PricePool"]
+                Dec = form.cleaned_data["Dec"]  
+
+                print(Dec)
+
+                
+                myobj = {
+                    "name": name,
+                    "how_many" : how_many,
+                    "place_id" : place_id,
+                    "gender" : gender,
+                    "Tour": {
+                        "PricePool" : PricePool,
+                        "Dec" : Dec
+                        },
+                            
+                        }
+                
+                
+                
+                x = requests.post(tour_url, json=myobj)
+                json_response = x.json()
+
+                
+
+                print(myobj)
+
+                return HttpResponseRedirect(reverse("tournements")) 
+
+         
+
+        return render(request, "tournements.html", {
 
 
-            "form" : TourForm,
+                "form" : TourForm,
 
-        })
-
+            })
 
     else:
   
@@ -129,7 +170,7 @@ def login(request):
 
     else:
 
-        return render(request, "web_admin/login.html")
+        return render(request, "login.html")
 
 def logout(request):
 

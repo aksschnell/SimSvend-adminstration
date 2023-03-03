@@ -1,8 +1,10 @@
-{% extends "web_admin/layout.html" %} {% block body%} {% load static %}
+{% extends "layout.html" %} {% block body%} {% load static %}
 
 <link rel="stylesheet" href="{% static 'style.css' %}" />
 
 <h1>Tournements</h1>
+
+<h4>Opret ny turnering</h4>
 
 <div class="form">
   <h3 style="color: red">{{message}}</h3>
