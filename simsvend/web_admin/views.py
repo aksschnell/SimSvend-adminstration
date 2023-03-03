@@ -20,6 +20,24 @@ class EditForm(forms.Form):
     elo = forms.CharField(label = "Elo",required=False)
     points = forms.CharField(label = "Points",required=False)
 
+class TourForm(forms.Form):
+    name = forms.CharField(label = "Navn",required=True)
+    how_many = forms.IntegerField(label = "How_many",required=True)
+    place_id = forms.IntegerField(label = "Place_ID",required=True)
+    gender = forms.CharField(label = "Køn",required=True)
+    PricePool = forms.IntegerField(label = "PricePool",required=True)
+    Dec = forms.CharField(label="Description", required=True)
+    
+
+
+    
+   
+
+
+
+
+
+
 def index(request):
     
 
@@ -68,7 +86,12 @@ def tournements(request):
 
     if request.session.get('role') == 2:     
 
-        return render(request, "web_admin/tournements.html")
+        return render(request, "web_admin/tournements.html", {
+
+
+            "form" : TourForm,
+
+        })
 
 
     else:

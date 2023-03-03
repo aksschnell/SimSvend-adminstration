@@ -1,5 +1,23 @@
-{% extends "web_admin/layout.html" %} {% block body%}
+{% extends "web_admin/layout.html" %} {% block body%} {% load static %}
+
+<link rel="stylesheet" href="{% static 'style.css' %}" />
 
 <h1>Tournements</h1>
+
+<div class="form">
+  <h3 style="color: red">{{message}}</h3>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <p>{{form.name}} {{form.name.label}}</p>
+    <p>{{form.how_many}} {{form.how_many.label}}</p>
+    <p>{{form.place_id}} {{form.place_id.label}}</p>
+    <p>{{form.gender}} {{form.gender.label}}</p>
+    <p>{{form.PricePool}} {{form.PricePool.label}}</p>
+    <p>{{form.Dec}} {{form.Dec.label}}</p>
+
+    <br /><br />
+    <input type="submit" value="Save" />
+  </form>
+</div>
 
 {% endblock %}
