@@ -4,6 +4,16 @@
 
 <h1>Tournements</h1>
 
+<ul>
+  {% for item in tours %}
+
+  <li>
+    ID: {{item.ID}} {{item.name}} Max players: {{item.how_many}} Køn:
+    {{item.gender}} Vært: {{item.Place.name}}
+  </li>
+
+  {% endfor %}
+</ul>
 <h4>Opret ny turnering</h4>
 
 <div class="form">
@@ -18,7 +28,7 @@
     <p>{{form.Dec}} {{form.Dec.label}}</p>
 
     <br /><br />
-    <input type="submit" value="Save" />
+    <input class="btn btn-primary" type="submit" value="Save" />
   </form>
 </div>
 

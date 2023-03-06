@@ -15,167 +15,207 @@ import hashlib
 
 url = "https://simsvendapi-production.up.railway.app/"
 
-class EditForm(forms.Form):    
-    id = forms.CharField(label = "id", required=True)
-    elo = forms.CharField(label = "Elo",required=False)
-    points = forms.CharField(label = "Points",required=False)
+
+class RoleEditForm(forms.Form):
+    user_id = forms.IntegerField(label="User_ID", required=True)
+    role_id = forms.IntegerField(
+        label="Role_ID 1=Normal, 2=Admin", required=True)
+
+
+class UserEditForm(forms.Form):
+    user_id = forms.IntegerField(label="User_ID", required=True)
+    elo = forms.IntegerField(label="Elo", required=False)
+    points = forms.IntegerField(label="Points", required=False)
+    wins = forms.IntegerField(label="Wins", required=False)
+    losses = forms.IntegerField(label="Losses", required=False)
+
 
 class TourForm(forms.Form):
-    name = forms.CharField(label = "Navn",required=True)
-    how_many = forms.IntegerField(label = "How_many",required=True)
-    place_id = forms.IntegerField(label = "Place_ID",required=True)
-    gender = forms.CharField(label = "Køn",required=True)
-    PricePool = forms.IntegerField(label = "PricePool",required=True)
+    name = forms.CharField(label="Navn", required=True)
+    how_many = forms.IntegerField(label="How_many", required=True)
+    place_id = forms.IntegerField(label="Place_ID", required=True)
+    gender = forms.CharField(label="Køn", required=True)
+    PricePool = forms.IntegerField(label="PricePool", required=True)
     Dec = forms.CharField(label="Description", required=True)
-    
-   
-
-
-
-
 
 
 def index(request):
-    
 
-    if request.session.get('role') == 2:      
+    if request.session.get('role') == 2:
 
- 
-        return render(request, "index.html",{          
-        
-    })
-    
+        return render(request, "index.html", {
+
+        })
+
     else:
-  
-        return HttpResponseRedirect(reverse("login")) 
 
+        return HttpResponseRedirect(reverse("login"))
+
+
+def edit_role(request):
+
+    roleForm = RoleEditForm(request.POST)
+    if roleForm.is_valid():
+
+        user_id = roleForm.cleaned_data["user_id"]
+        role_id = roleForm.cleaned_data["role_id"]
+
+        obj = {
+            "ID": user_id,
+            "RoleID": role_id
+        }
+
+        role_url = "https://simsvendapi-production.up.railway.app/user/role"
+
+        x = requests.post(role_url, json=obj)
+        json_response = x.json()
+
+        return HttpResponseRedirect(reverse("users"))
 
 
 def users(request):
 
-    if request.session.get('role') == 2:     
+    users_url = "https://simsvendapi-production.up.railway.app/user/stats/"
 
-        return render(request, "users.html",{
+    stats_url = "https://simsvendapi-production.up.railway.app/user/leaderboard"
 
-            "form" : EditForm
+    x = requests.get(stats_url)
+    json_response = x.json()
+
+    if request.session.get('role') == 2:
+
+        if request.method == "POST":
+
+            form = UserEditForm(request.POST)
+
+            roleForm = RoleEditForm(request.POST)
+
+            if form.is_valid():
+
+                user_id = form.cleaned_data["user_id"]
+                elo = form.cleaned_data["elo"]
+                points = form.cleaned_data["points"]
+                wins = form.cleaned_data["wins"]
+                losses = form.cleaned_data["losses"]
+
+                myobj = {
+                    "elo": elo,
+                    "points": points,
+                    "Wins": wins,
+                    "losses": losses,
+                    "userId": user_id
+                }
+
+                x = requests.post(users_url, json=myobj)
+                json_response = x.json()
+
+                return HttpResponseRedirect(reverse("users"))
+
+        return render(request, "users.html", {
+
+            "form": UserEditForm,
+            "role_form": RoleEditForm,
+            "users": json_response
 
         })
     else:
-  
-        return HttpResponseRedirect(reverse("login")) 
+
+        return HttpResponseRedirect(reverse("login"))
 
 
 def matches(request):
 
-    if request.session.get('role') == 2:     
+    if request.session.get('role') == 2:
 
         return render(request, "matches.html")
 
-
     else:
-  
-        return HttpResponseRedirect(reverse("login")) 
-        
 
+        return HttpResponseRedirect(reverse("login"))
 
 
 def tournements(request):
 
-    if request.session.get('role') == 2:    
-        
-        if request.method == "POST":
+    if request.session.get('role') == 2:
 
+        tournements_url = "https://simsvendapi-production.up.railway.app/tour"
+
+        x = requests.get(tournements_url)
+        json_response = x.json()
+
+        if request.method == "POST":
 
             tour_url = "https://simsvendapi-production.up.railway.app/tour/"
 
-            
             form = TourForm(request.POST)
-            
+
             if form.is_valid():
-                
+
                 name = form.cleaned_data["name"]
                 how_many = form.cleaned_data["how_many"]
                 place_id = form.cleaned_data["place_id"]
                 gender = form.cleaned_data["gender"]
                 PricePool = form.cleaned_data["PricePool"]
-                Dec = form.cleaned_data["Dec"]  
+                Dec = form.cleaned_data["Dec"]
 
-                print(Dec)
-
-                
                 myobj = {
                     "name": name,
-                    "how_many" : how_many,
-                    "place_id" : place_id,
-                    "gender" : gender,
+                    "how_many": how_many,
+                    "place_id": place_id,
+                    "gender": gender,
                     "Tour": {
-                        "PricePool" : PricePool,
-                        "Dec" : Dec
-                        },
-                            
-                        }
-                
-                
-                
+                        "PricePool": PricePool,
+                        "Dec": Dec
+                    },
+
+                }
+
                 x = requests.post(tour_url, json=myobj)
                 json_response = x.json()
 
-                
-
                 print(myobj)
 
-                return HttpResponseRedirect(reverse("tournements")) 
-
-         
+                return HttpResponseRedirect(reverse("tournements"))
 
         return render(request, "tournements.html", {
 
 
-                "form" : TourForm,
+            "form": TourForm,
+            "tours": json_response
 
-            })
+        })
 
     else:
-  
-        return HttpResponseRedirect(reverse("login")) 
+
+        return HttpResponseRedirect(reverse("login"))
+
 
 def login(request):
-
 
     if request.method == "POST":
         # Attempt to sign user in
 
-
         email = request.POST["email_test"]
-        password = request.POST["password"]   
-        
+        password = request.POST["password"]
 
-        myobj = {'email': "t.kronborg6@gmail.com", "password" : "Test"}
-        x = requests.post(url + "user/login", json = myobj)   
+        myobj = {'email': "t.kronborg6@gmail.com", "password": "Test"}
+        x = requests.post(url + "user/login", json=myobj)
         json_response = x.json()
 
-       
         role = json_response[0]["RoleID"]
-        
-        session = requests.session()    
-        request.session['role'] = role        
-        
 
+        session = requests.session()
+        request.session['role'] = role
 
-
-        return HttpResponseRedirect(reverse("index"))    
-
-
-        
+        return HttpResponseRedirect(reverse("index"))
 
     else:
 
         return render(request, "login.html")
 
+
 def logout(request):
 
-
     request.session['role'] = ""
-   
 
-    return HttpResponseRedirect(reverse("login"))  
+    return HttpResponseRedirect(reverse("login"))
