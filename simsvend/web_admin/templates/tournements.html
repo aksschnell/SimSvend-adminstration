@@ -2,34 +2,36 @@
 
 <link rel="stylesheet" href="{% static 'style.css' %}" />
 
-<h1>Tournements</h1>
-
-<ul>
-  {% for item in tours %}
-
-  <li>
-    ID: {{item.ID}} {{item.name}} Max players: {{item.how_many}} Køn:
-    {{item.gender}} Vært: {{item.Place.name}}
-  </li>
-
-  {% endfor %}
-</ul>
-<h4>Opret ny turnering</h4>
-
-<div class="form">
-  <h3 style="color: red">{{message}}</h3>
+<div class="container">
   <form action="" method="POST">
+    <h1>Opret ny turnering</h1>
     {% csrf_token %}
-    <p>{{form.name}} {{form.name.label}}</p>
-    <p>{{form.how_many}} {{form.how_many.label}}</p>
-    <p>{{form.place_id}} {{form.place_id.label}}</p>
-    <p>{{form.gender}} {{form.gender.label}}</p>
-    <p>{{form.PricePool}} {{form.PricePool.label}}</p>
-    <p>{{form.Dec}} {{form.Dec.label}}</p>
+    <p>{{form.name}}</p>
+    <p>{{form.how_many}}</p>
+    <p>{{form.place_id}}</p>
+    <p>{{form.gender}}</p>
+    <p>{{form.PricePool}}</p>
+    <p>{{form.Dec}}</p>
 
-    <br /><br />
     <input class="btn btn-primary" type="submit" value="Save" />
   </form>
+</div>
+
+<div class="table_container">
+  <div class="table">
+    <h1>Tournements</h1>
+
+    <ul>
+      {% for item in tours %}
+
+      <li>
+        ID: {{item.ID}} {{item.name}} Max players: {{item.how_many}} Køn:
+        {{item.gender}} Vært: {{item.Place.name}}
+      </li>
+
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 
 {% endblock %}

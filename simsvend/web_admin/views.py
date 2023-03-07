@@ -19,24 +19,35 @@ url = "https://simsvendapi-production.up.railway.app/"
 class RoleEditForm(forms.Form):
     user_id = forms.IntegerField(label="User_ID", required=True)
     role_id = forms.IntegerField(
-        label="Role_ID 1=Normal, 2=Admin", required=True)
+        label="Role_ID 1=Normal, 2=Admin", required=True, )
 
 
 class UserEditForm(forms.Form):
-    user_id = forms.IntegerField(label="User_ID", required=True)
-    elo = forms.IntegerField(label="Elo", required=False)
-    points = forms.IntegerField(label="Points", required=False)
-    wins = forms.IntegerField(label="Wins", required=False)
-    losses = forms.IntegerField(label="Losses", required=False)
+    user_id = forms.IntegerField(label="User_ID", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'User ID'}))
+    elo = forms.IntegerField(label="Elo", required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Elo'}))
+    points = forms.IntegerField(label="Points", required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Points'}))
+    wins = forms.IntegerField(label="Wins", required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Wins'}))
+    losses = forms.IntegerField(label="Losses", required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Losses'}))
 
 
 class TourForm(forms.Form):
-    name = forms.CharField(label="Navn", required=True)
-    how_many = forms.IntegerField(label="How_many", required=True)
-    place_id = forms.IntegerField(label="Place_ID", required=True)
-    gender = forms.CharField(label="Køn", required=True)
-    PricePool = forms.IntegerField(label="PricePool", required=True)
-    Dec = forms.CharField(label="Description", required=True)
+    name = forms.CharField(label="Navn", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Navn'}))
+    how_many = forms.IntegerField(label="How_many", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'How_many'}))
+    place_id = forms.IntegerField(label="Place_ID", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Place ID'}))
+    gender = forms.CharField(label="Køn", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Køn'}))
+    PricePool = forms.IntegerField(label="PricePool", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Price pool'}))
+    Dec = forms.CharField(label="Description", required=True, widget=forms.TextInput(
+        attrs={'placeholder': 'Beskrivelser'}))
 
 
 def index(request):
