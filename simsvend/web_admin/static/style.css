@@ -28,7 +28,7 @@ form{
     text-align: center;
     display: flex;
     flex-direction: column;
-    padding: 10% 25%;
+    padding: 100px;
     justify-content: space-between;
 }
 
@@ -51,3 +51,10 @@ form option {
     padding-bottom: 20px;
 }
 
+
+
+.btn{
+    
+    margin: 0 auto;
+    min-width: 186px;
+}

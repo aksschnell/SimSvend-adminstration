@@ -28,7 +28,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url "users" %}">Brugere</a>
                 </li>
-
+                
                 <li class="nav-item">
                     <a class="nav-link" href="{% url "matches" %}">Kampe</a>
                 </li>
@@ -36,13 +36,23 @@
                   <a class="nav-link" href="{% url "tournements" %}">Turneringer</a>
               </li>
               
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url "login" %}">Login</a>
-              </li>
+             
+
+
+              {% if request.session.role == 2 %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url "logout" %}">Logout</a>
             </li>
-              
+
+            {% else%}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url "login" %}">Login</a>
+          </li>
+
+
+
+              {%endif%}
                 
 
 

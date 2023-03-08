@@ -4,7 +4,7 @@
 
 <div class="container">
   <form action="" method="POST">
-    <h1>Opret ny turnering</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 20px;">Opret ny turnering</h1>
     {% csrf_token %}
     <p>{{form.name}}</p>
     <p>{{form.how_many}}</p>
@@ -15,12 +15,15 @@
 
     <input class="btn btn-primary" type="submit" value="Save" />
   </form>
-</div>
 
-<div class="table_container">
-  <div class="table">
-    <h1>Tournements</h1>
 
+<h1>{{testme}}</h1>
+
+<div style="margin-top:40px" class="row">
+  <div class="col">
+    <div class="table">
+      <h1>Tournements</h1>
+      
     <ul>
       {% for item in tours %}
 
@@ -31,7 +34,11 @@
 
       {% endfor %}
     </ul>
+    </div>
   </div>
 </div>
+</div>
+</div>
+
 
 {% endblock %}
