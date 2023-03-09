@@ -9,10 +9,6 @@ from django import forms
 import json
 import hashlib
 
-
-# Create your views here.
-
-
 url = "https://simsvendapi-production.up.railway.app/"
 
 
@@ -52,7 +48,7 @@ class TourForm(forms.Form):
 
 def index(request):
 
-    if request.session.get('role') == 2:
+    if request.session.get('token'):
 
         return render(request, "index.html", {
 
@@ -90,10 +86,20 @@ def users(request):
 
     stats_url = "https://simsvendapi-production.up.railway.app/user/leaderboard"
 
-    x = requests.get(stats_url)
-    json_response = x.json()
+    if request.session.get('token'):
 
-    if request.session.get('role') == 2:
+        token = request.session.get("token")
+
+        headers = {"Authorization": "Bearer " + token}
+
+        response = requests.get(stats_url, headers=headers)
+
+        response.raise_for_status()
+
+        if response.status_code_code == 200:
+            json_response = x.json()
+        else:
+            json_response = "Empty"
 
         if request.method == "POST":
 
@@ -136,7 +142,7 @@ def users(request):
 
 def matches(request):
 
-    if request.session.get('role') == 2:
+    if request.session.get('token'):
 
         return render(request, "matches.html")
 
@@ -147,12 +153,22 @@ def matches(request):
 
 def tournements(request):
 
-    if request.session.get('role') == 2:
+    if request.session.get('token'):
 
         tournements_url = "https://simsvendapi-production.up.railway.app/tour"
 
+        token = request.session.get("token")
+
+        headers = {"Authorization": "Bearer " + token}
+
         x = requests.get(tournements_url)
-        json_response = x.json()
+
+        x.raise_for_status()
+
+        if x.status_code_code == 200:
+            json_response = x.json()
+        else:
+            json_response = "Empty"
 
         if request.method == "POST":
 
@@ -182,6 +198,7 @@ def tournements(request):
                 }
 
                 x = requests.post(tour_url, json=myobj)
+
                 json_response = x.json()
 
                 print(myobj)
@@ -210,13 +227,13 @@ def login(request):
         password = request.POST["password"]
 
         myobj = {'email': "t.kronborg6@gmail.com", "password": "Test"}
-        x = requests.post(url + "user/login", json=myobj)
+        x = requests.post(url + "auth/adminlogin", json=myobj)
         json_response = x.json()
 
-        role = json_response[0]["RoleID"]
+        token = json_response["token"]
 
         session = requests.session()
-        request.session['role'] = role
+        request.session['token'] = token
 
         return HttpResponseRedirect(reverse("index"))
 
@@ -227,6 +244,6 @@ def login(request):
 
 def logout(request):
 
-    request.session['role'] = ""
+    request.session['token'] = ""
 
     return HttpResponseRedirect(reverse("login"))

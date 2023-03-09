@@ -58,3 +58,17 @@ form option {
     margin: 0 auto;
     min-width: 186px;
 }
+
+#login{
+    max-height: 50%;
+    max-width: 50%;
+    margin: auto;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#login input{    
+    width: 250px;
+    margin: auto;
+   
+}

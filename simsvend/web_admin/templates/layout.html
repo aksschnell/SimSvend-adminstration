@@ -39,7 +39,7 @@
              
 
 
-              {% if request.session.role == 2 %}
+              {% if request.session.token %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url "logout" %}">Logout</a>
             </li>
