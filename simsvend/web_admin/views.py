@@ -50,6 +50,8 @@ def index(request):
 
     if request.session.get('token'):
 
+        print(request.session.get('token'))
+
         return render(request, "index.html", {
 
         })
@@ -64,6 +66,10 @@ def edit_role(request):
     roleForm = RoleEditForm(request.POST)
     if roleForm.is_valid():
 
+        token = request.session.get("token")
+
+        headers = {"Authorization": "Bearer " + token}
+
         user_id = roleForm.cleaned_data["user_id"]
         role_id = roleForm.cleaned_data["role_id"]
 
@@ -72,9 +78,9 @@ def edit_role(request):
             "RoleID": role_id
         }
 
-        role_url = "https://simsvendapi-production.up.railway.app/user/role"
+        role_url = "https://simsvendapi-production.up.railway.app/admin/role"
 
-        x = requests.post(role_url, json=obj)
+        x = requests.post(role_url, json=obj, headers=headers)
         json_response = x.json()
 
         return HttpResponseRedirect(reverse("users"))
@@ -82,9 +88,9 @@ def edit_role(request):
 
 def users(request):
 
-    users_url = "https://simsvendapi-production.up.railway.app/user/stats/"
+    users_url = "https://simsvendapi-production.up.railway.app/admin/stats/"
 
-    stats_url = "https://simsvendapi-production.up.railway.app/user/leaderboard"
+    stats_url = "https://simsvendapi-production.up.railway.app/admin/all/"
 
     if request.session.get('token'):
 
@@ -96,10 +102,7 @@ def users(request):
 
         response.raise_for_status()
 
-        if response.status_code_code == 200:
-            json_response = x.json()
-        else:
-            json_response = "Empty"
+        json_response = response.json()
 
         if request.method == "POST":
 
@@ -123,7 +126,7 @@ def users(request):
                     "userId": user_id
                 }
 
-                x = requests.post(users_url, json=myobj)
+                x = requests.post(users_url, json=myobj, headers=headers)
                 json_response = x.json()
 
                 return HttpResponseRedirect(reverse("users"))
@@ -226,7 +229,13 @@ def login(request):
         email = request.POST["email_test"]
         password = request.POST["password"]
 
-        myobj = {'email': "t.kronborg6@gmail.com", "password": "Test"}
+        amail = "augustschnellpedersen@gmail.com"
+        apass = "Test"
+
+        bmail = "mkronborg7@gmail.com"
+        bpass = "Test"
+
+        myobj = {'email': bmail, "password": "Test"}
         x = requests.post(url + "auth/adminlogin", json=myobj)
         json_response = x.json()
 
