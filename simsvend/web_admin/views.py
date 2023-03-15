@@ -269,7 +269,6 @@ def tournements(request):
                         "PricePool": PricePool,
                         "Dec": Dec
                     },
-
                 }
 
                 x = requests.post(tour_url, json=myobj, headers=headers)
@@ -279,7 +278,6 @@ def tournements(request):
                 return HttpResponseRedirect(reverse("tournements"))
 
         return render(request, "tournements.html", {
-
 
             "form": TourForm,
             "edit_form": TourEditForm,
