@@ -71,11 +71,7 @@ def index(request):
 
     if request.session.get('token'):
 
-        print(request.session.get('token'))
-
-        return render(request, "index.html", {
-
-        })
+        return HttpResponseRedirect(reverse("users"))
 
     else:
 
@@ -299,18 +295,11 @@ def tournements(request):
 def login(request):
 
     if request.method == "POST":
-        # Attempt to sign user in
 
         email = request.POST["email_test"]
         password = request.POST["password"]
 
-        amail = "augustschnellpedersen@gmail.com"
-        apass = "Test"
-
-        bmail = "mkronborg7@gmail.com"
-        bpass = "Test"
-
-        myobj = {'email': bmail, "password": "Test"}
+        myobj = {'email': email, "password": password}
         x = requests.post(url + "auth/adminlogin", json=myobj)
         json_response = x.json()
 
